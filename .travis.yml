@@ -1,2 +1,10 @@
 language: node_js
 node_js: node
+deploy:
+  provider: heroku
+  api_key:
+    secure: 291b34d7-734e-4559-bbe8-ee2f7a470363
+  app: intense-mountain-26963
+
+  on:
+    repo: Blubagoo/mongoose--blog-test
