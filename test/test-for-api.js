@@ -3,6 +3,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
+const faker = require('faker');
 
 const expect = chai.expect;
 
@@ -23,17 +24,6 @@ function seedBlog() {
 	return BlogPost.insertMany(seedData);
 }
 
-function generateTitle() {
-	const titles = ['Days Go By', 'Stranger Things', 'Atlas Explored', 'Tommy Two Tone: The Star'];
-	
-	return titles[Math.floor(Math.random() * titles.length)];
-}
-
-function generateContent() {
-	const content = ['Lorem Sum Ipsum', 'Ipsum Sum Lorem', 'Sum Ipsum Lorem', 'Lorem Ipsum Sum'];
-	
-	return content[Math.floor(Math.random() * content.length)];
-}
 
 function generateAuthor() {
 	const authors = ['Janey Briley', 'Jon Faraday', 'Wade Watts', 'Baba O Riley'];
@@ -43,8 +33,8 @@ function generateAuthor() {
 
 function generateBlogData() {
 	return {
-		title: generateTitle(),
-		content: generateContent(),
+		title: faker.lorem.sentence(),
+		content: faker.lorem.text(),
 		author: generateAuthor()
 	}
 }
@@ -85,7 +75,7 @@ describe('Blog Resource Api', function() {
 				.then(function(_res) {
 					res = _res;
 					expect(res).to.have.status(200);
-					expect(res.body.blogs).to.have.lengthOf.at.least(1);
+					expect(res.body).to.have.lengthOf.at.least(1);
 					return BlogPost.count();
 				});
 		});
@@ -99,14 +89,14 @@ describe('Blog Resource Api', function() {
 				.then(function(res) {
 					expect(res).to.have.status(200);
 					expect(res).to.be.json;
-					expect(res.body.blogs).to.be.a('array');
-					expect(res.body.blogs).to.have.lengthOf.at.least(1);
+					expect(res.body).to.be.a('array');
+					expect(res.body).to.have.lengthOf.at.least(1);
 
-					res.body.blogs.forEach(function(blog) {
+					res.body.forEach(function(blog) {
 						expect(blog).to.be.a('object');
 						expect(blog).to.include.keys('id', 'title', 'content', 'author', 'created');
 					});
-					resPost = res.body.blogs[0];
+					resPost = res.body[0];
 
 					return BlogPost.findById(resPost.id);
 				})
@@ -114,8 +104,6 @@ describe('Blog Resource Api', function() {
 					expect(resPost.id).to.equal(blog.id);
 					expect(resPost.title).to.equal(blog.title);
 					expect(resPost.content).to.equal(blog.content);
-					expect(resPost.author).to.equal(blog.author);
-					expect(resPost.created).to.equal(blog.created);
 				});
 		});
 	});
