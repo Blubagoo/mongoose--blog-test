@@ -91,7 +91,7 @@ describe('Blog Resource Api', function() {
 		});
 
 		it('should return blogs with right info', function() {
-			let resBlog;
+			let resPost;
 
 
 			return chai.request(app)
@@ -106,16 +106,16 @@ describe('Blog Resource Api', function() {
 						expect(blog).to.be.a('object');
 						expect(blog).to.include.keys('id', 'title', 'content', 'author', 'created');
 					});
-					resBlog = res.body.blogs[0];
+					resPost = res.body.blogs[0];
 
-					return BlogPost.findById(resBlog.id);
+					return BlogPost.findById(resPost.id);
 				})
 				.then(function(blog) {
-					expect(resBlog.id).to.equal(blog.id);
-					expect(resBlog.title).to.equal(blog.title);
-					expect(resBlog.content).to.equal(blog.content);
-					expect(resBlog.author).to.equal(blog.author);
-					expect(resBlog.created).to.equal(blog.created);
+					expect(resPost.id).to.equal(blog.id);
+					expect(resPost.title).to.equal(blog.title);
+					expect(resPost.content).to.equal(blog.content);
+					expect(resPost.author).to.equal(blog.author);
+					expect(resPost.created).to.equal(blog.created);
 				});
 		});
 	});
