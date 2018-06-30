@@ -7,8 +7,10 @@ const mongoose = require('mongoose');
 const expect = chai.expect;
 
 const {BlogPost} = require('../models');
-const {app, runSe rver, closeServer} = require('../server');
+const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
+
+chai.use(chaiHttp);
 
 function seedBlog() {
 	console.info('seeding blog data');
@@ -28,7 +30,7 @@ function generateTitle() {
 }
 
 function generateContent() {
-	cont content = ['Lorem Sum Ipsum', 'Ipsum Sum Lorem', 'Sum Ipsum Lorem', 'Lorem Ipsum Sum'];
+	const content = ['Lorem Sum Ipsum', 'Ipsum Sum Lorem', 'Sum Ipsum Lorem', 'Lorem Ipsum Sum'];
 	
 	return content[Math.floor(Math.random() * content.length)];
 }
@@ -56,7 +58,7 @@ describe('Blog Resource Api', function() {
 
 	before(function() {
 		
-		return runServer();
+		return runServer(TEST_DATABASE_URL);
 	});
 	
 	beforeEach(function() {
